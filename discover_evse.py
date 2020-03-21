@@ -9,18 +9,6 @@ if (len(sys.argv) < 2):
     print("please use /dev/ttyUSBx as argument")
     quit()
 
-def connect():
-    try:
-        serialPort.open()
-    except Exception as e:
-        print("Could not connect: {}".format(str(e)))
-        return False
-        
-    print("Connected")
-    return True
-
-
-
 print("opening {} hit CTRL+C to exit".format(sys.argv[1]))
 serialClient = ModbusSerialClient(method = "rtu", port=sys.argv[1], baudrate=9600, stopbits=1, bytesize=8, timeout=0.2)
 serialClient.connect()

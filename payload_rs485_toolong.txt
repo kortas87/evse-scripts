@@ -1,0 +1,33 @@
+# write 1000=32A, id1 1st round
+01 10 03 e8 00 01 02 00 20 83 a0
+01 10 03 e8 00 01 81 b9
+#read 1000=32A id1
+01 03 03 e8 00 01 04 7a
+01 03 02 00 20 b9 9c
+#write 1000=22A id1
+01 10 03 e8 00 01 02 00 16 03 b6
+01 10 03 e8 00 01 81 b9
+#read 1000=22A id1
+01 03 03 e8 00 01 04 7a
+01 03 02 00 16 39 8a
+# write 1000=32A id1
+01 10 03 e8 00 01 02 00 20 83 a0
+01 10 03 e8 00 01 81 b9
+# send bullshit 80 bytes
+00 02 03 04 05 af de ad be ef ab cd ef 20 30 10 40 99 88 23 00 02 03 04 05 af de ad be ef ab cd ef 20 30 10 40 99 88 23 00 02 03 04 05 af de ad be ef ab cd ef 20 30 10 40 99 88 23 00 02 03 04 05 af de ad be ef ab cd ef 20 30 10 40 99 88 23
+
+#read 1000=32A id1
+01 03 03 e8 00 01 04 7a
+01 03 02 00 20 b9 9c
+#read 1000=32A id1
+01 03 03 e8 00 01 04 7a
+01 03 02 00 20 b9 9c
+# send more bullshit
+00 02 03 04 05 af de ad be ef ab cd ef 20 30 10 40 99 88 23 00 02 03 04 05 af de ad be ef ab cd ef 20 30 10 40 99 88 23 00 02 03 04 05 af de ad be ef ab cd ef 20 30 10 40 99 88 23 00 02 03 04 05 af de ad be ef ab cd ef 20 30 10 40 99 88 23 20 30 10 40 99 88 23 00 02 03 04 05 af de ad be ef ab cd ef 20 30 10 40 99 88 23 00 02 03 04 05 af de ad be 20 30 10 40 99 88 23 00 02 03 04 05 af de ad be ef ab cd ef 20 30 10 40 99 88 23 00 02 03 04 05 af de ad be
+
+#read 1000=32A id1
+01 03 03 e8 00 01 04 7a
+01 03 02 00 20 b9 9c
+#read 1000=32A id1
+01 03 03 e8 00 01 04 7a
+01 03 02 00 20 b9 9c
