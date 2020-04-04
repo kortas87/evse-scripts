@@ -4,6 +4,9 @@ import serial
 import time
 from pymodbus.client.sync import ModbusSerialClient
 
+TOTAL_RUNTIME_REGISTERS = 9
+TOTAL_CONFIG_REGISTERS  = 18
+
 if (len(sys.argv) < 3):
     print("please use /dev/ttyUSBx and slave address (1-255) as argument")
     quit()
@@ -21,8 +24,8 @@ try:
         try:
             if serialClient.is_socket_open():
                 if 1==cycle:
-                    rq = serialClient.read_holding_registers(2000,18,unit=int(sys.argv[2]))
-                    if 18 == len(rq.registers):
+                    rq = serialClient.read_holding_registers(2000,TOTAL_CONFIG_REGISTERS,unit=int(sys.argv[2]))
+                    if TOTAL_CONFIG_REGISTERS == len(rq.registers):
                         print("    EVSE config:")
                         print("2000 | default amps [A]                                  : {}".format(rq.registers[0]))
                         print("2001 | modbus address                                    : {}".format(rq.registers[1]))
@@ -35,7 +38,7 @@ try:
                         print("  b2 | pilot ready state LED is not blinking             : {}".format(rq.registers[5]&4>0))
                         print("  b3 | enable charging on STATUS D                       : {}".format(rq.registers[5]&8>0))
                         print("  b4 | enable RCD feedback (MCLR pin)                    : {}".format(rq.registers[5]&16>0))
-                        print("  b5 | autoclear RCD error (30s timeout)                 : {}".format(rq.registers[5]&32>0))
+                        print("  b5 | autoclear RCD error (short timeout)               : {}".format(rq.registers[5]&32>0))
                         print("  .. | reserved")
                         print(" b13 | disable EVSE after charge                         : {}".format(rq.registers[5]&8192>0))
                         print(" b14 | EVSE is disabled (no charge)                      : {}".format(rq.registers[5]&16384>0))
@@ -54,10 +57,10 @@ try:
                         print("2017 | amps value 80A [A]                                : {}".format(rq.registers[17]))
                         time.sleep(1)
                     else:
-                        print("Could not read config (18 registers)")
-                rq = serialClient.read_holding_registers(1000,8,unit=int(sys.argv[2]))
+                        print("Could not read config ({} registers)".format(TOTAL_CONFIG_REGISTERS))
+                rq = serialClient.read_holding_registers(1000,TOTAL_RUNTIME_REGISTERS,unit=int(sys.argv[2]))
                 
-                if 8 == len(rq.registers):
+                if TOTAL_RUNTIME_REGISTERS == len(rq.registers):
                     print("\n   EVSE runtime variables:")
                     print("1000 | actual amps [A]                                    : {}".format(rq.registers[0]))
                     print("1001 | amps on PWM driver output [A]                      : {}".format(rq.registers[1]))
@@ -78,8 +81,9 @@ try:
                     print("  b4 | RCD test in progress                               : {}".format(rq.registers[7]&16>0))
                     print("  b5 | RCD check error                                    : {}".format(rq.registers[7]&32>0))
                     print("  .. | reserved")
+                    print("1008 | error timeout countdown                            : {}".format(rq.registers[8]))
                 else:
-                    print("Could not read runtime values (8 registers)")
+                    print("Could not read runtime values ({} registers)".format(TOTAL_RUNTIME_REGISTERS))
             else:
                 print("...RECONNECTING...")
                 serialClient.connect()   
